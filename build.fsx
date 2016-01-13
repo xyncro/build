@@ -3,7 +3,7 @@
    A very simple standard build script using Fake and Paket. The script is
    used to build the simple Xyncro projects such as Aether etc. which share
    a common conventional layout, etc.
-   
+
    The build file is included via a Git submodule under the /build path
    within a repository, and is then called from a project specific build
    command or batch file which is expected to have restored any packages
@@ -11,14 +11,24 @@
    Paket tooling).
 
    The build files MUST pass in the "product" environment variable. *)
-   
-System.Environment.CurrentDirectory  <- "../../../../"
 
-#I "packages/build/FAKE/tools"
-#r "packages/build/FAKE/tools/FakeLib.dll"
+(* Dependencies
+
+   Load Fake and other dependencies where required, assuming that this
+   file is within a repository at paket-files/build/xyncro/build/ as it
+   is when included using Paket GitHub support. *)
+
+open System
+
+Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
+
+#I "../../../../packages/build/FAKE/tools"
+#r "../../../../packages/build/FAKE/tools/FakeLib.dll"
 
 open Fake
 open Fake.Testing
+
+Environment.CurrentDirectory <- "../../../../"
 
 (* Solution
 
