@@ -11,9 +11,11 @@
    Paket tooling).
 
    The build files MUST pass in the "product" environment variable. *)
+   
+System.Environment.CurrentDirectory  <- "../../../../"
 
-#I "../packages/build/FAKE/tools"
-#r "../packages/build/FAKE/tools/FakeLib.dll"
+#I "packages/build/FAKE/tools"
+#r "packages/build/FAKE/tools/FakeLib.dll"
 
 open Fake
 open Fake.Testing
