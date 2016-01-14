@@ -62,9 +62,9 @@ Target "Clean" <| fun _ ->
    default properties for optimization, debug symbols, etc. *)
 
 let private properties =
-    [ "Optimize",      environVarOrDefault "Build.Optimize"      "True"
-      "DebugSymbols",  environVarOrDefault "Build.DebugSymbols"  "True"
-      "Configuration", environVarOrDefault "Build.Configuration" "Release" ]
+    [ "Optimize",      environVarOrDefault "optimize"      "True"
+      "DebugSymbols",  environVarOrDefault "symbols"       "True"
+      "Configuration", environVarOrDefault "configuration" "Release" ]
 
 let private targets =
     [ "Build" ]
@@ -104,6 +104,7 @@ Target "Pack" <| fun _ ->
 Target "Push" <| fun _ ->
     Paket.Push (fun p ->
         { p with
+            PublishUrl = environVarOrDefault "nugeturl" p.PublishUrl
             WorkingDir = tempDir })
 
 (* Dependencies
