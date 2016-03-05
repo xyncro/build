@@ -88,7 +88,7 @@ Target "Test" <| fun _ ->
     |> xUnit2 (fun p ->
         { p with
             HtmlOutputPath = None
-            Parallel = All })
+            Parallel = ParallelMode.All })
 
 (* Package
 
