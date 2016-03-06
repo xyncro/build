@@ -81,14 +81,18 @@ Target "Build" <| fun _ ->
    Convention based testing based on release binaries and using an
    assumption that the testing tools used will be controlled by a top level
    of XUnit 2 tests. XUnit 2 integration handles pushing of results etc. to
-   relevant CI systems when running in an appropriate environment. *)
+   relevant CI systems when running in an appropriate environment.
+   
+   XUnit 2 is only invoked when the sequence of matching test assemblies is
+   non-empty. *)
 
 Target "Test" <| fun _ ->
     !! "tests/**/bin/Release/*.Tests.dll"
-    |> xUnit2 (fun p ->
-        { p with
-            HtmlOutputPath = None
-            Parallel = ParallelMode.All })
+    |> function | x when Seq.isEmpty x -> ()
+                | x -> xUnit2 (fun p ->
+                        { p with
+                            HtmlOutputPath = None
+                            Parallel = ParallelMode.All }) x
 
 (* Package
 
