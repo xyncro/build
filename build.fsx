@@ -94,22 +94,15 @@ Target "Test" <| fun _ ->
                             HtmlOutputPath = None
                             Parallel = ParallelMode.All }) x
 
-(* Package
+(* Pack
 
-   Paket based packaging and publishing (publishing - push - only being
-   called when the nugetkey environment variable is present). Packaging is
-   based on the documented Paket conventions of template files, etc. *)
+   Paket based packaging of artifacts given appropriate template
+   files in correct locations. *)
 
 Target "Pack" <| fun _ ->
     Paket.Pack (fun p ->
         { p with
             OutputPath = tempDir })
-
-Target "Push" <| fun _ ->
-    Paket.Push (fun p ->
-        { p with
-            PublishUrl = environVarOrDefault "nugeturl" p.PublishUrl
-            WorkingDir = tempDir })
 
 (* Dependencies
 
@@ -122,7 +115,6 @@ Target "Default" DoNothing
     ==> "Build"
     ==> "Test"
     ==> "Pack"
-    =?> ("Push", Option.isSome (environVarOrNone "nugetkey"))
     ==> "Default"
 
 RunTargetOrDefault "Default"
